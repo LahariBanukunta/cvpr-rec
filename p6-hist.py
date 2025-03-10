@@ -2,17 +2,15 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def calculate_histogram(image):
-    """Calculate and plot histogram of an image."""
+def calculate_histogram(image, title="Histogram"):
+    """Calculate and return histogram of an image."""
     histogram = cv2.calcHist([image], [0], None, [256], [0, 256])
-    plt.figure(figsize=(8, 6))
     plt.plot(histogram, color='black')
-    plt.title("Histogram of Image")
+    plt.title(title)
     plt.xlabel("Pixel Intensity")
     plt.ylabel("Frequency")
     plt.xlim([0, 256])
     plt.grid()
-    plt.show()
 
 def histogram_equalization(image):
     """Perform histogram equalization on the image."""
@@ -31,23 +29,32 @@ image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 if image is None:
     print("Error: Could not load image.")
 else:
-    # Resize the image to a specific size (e.g., 400x400 pixels)
-    resized_image = cv2.resize(image, (400, 400))  # (width, height)
+    # Resize the image for uniformity
+    resized_image = cv2.resize(image, (400, 400))
 
-    # Step 1: Calculate and plot histogram of the resized image
-    calculate_histogram(resized_image)
-
-    # Step 2: Perform Histogram Equalization
+    # Apply Histogram Equalization & CLAHE
     equalized_image = histogram_equalization(resized_image)
-
-    # Step 3: Perform CLAHE
     clahe_image = clahe_equalization(resized_image)
 
-    # Display results
+    # Display images
     cv2.imshow("Original Resized Image", resized_image)
     cv2.imshow("Histogram Equalized Image", equalized_image)
     cv2.imshow("CLAHE Image", clahe_image)
 
-    # Wait for user input to close the images
+    # Plot histograms side by side
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(1, 3, 1)
+    calculate_histogram(resized_image, "Original Image Histogram")
+
+    plt.subplot(1, 3, 2)
+    calculate_histogram(equalized_image, "Histogram Equalized")
+
+    plt.subplot(1, 3, 3)
+    calculate_histogram(clahe_image, "CLAHE Histogram")
+
+    plt.tight_layout()
+    plt.show()
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
