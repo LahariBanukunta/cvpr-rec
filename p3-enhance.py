@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the image in grayscale
-image = cv2.imread('doraemon.webp', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('doraemon.webp')
 
 # Resize the image to a specific size (e.g., 400x400 pixels)
-resized_image = cv2.resize(image, (400, 400))  # (width, height)
+resized_image = cv2.resize(image, (300, 300))  # (width, height)
 
 # Function for Bit Level Slicing
 def bit_level_slicing(image, bit_position):
@@ -31,10 +31,8 @@ def display_images(images, titles):
     plt.figure(figsize=(10, 10))
     for i, (img, title) in enumerate(zip(images, titles)):
         plt.subplot(2, 3, i+1)
-        plt.imshow(img, cmap='gray')
+        plt.imshow(img)
         plt.title(title)
-        plt.axis('off')
-    plt.tight_layout()
     plt.show()
 
 # Processing images using resized image
