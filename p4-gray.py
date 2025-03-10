@@ -29,6 +29,6 @@ for i in range(3):
     plt.subplot(2, 3, i+1)
     plt.imshow(images[i], cmap='gray')
     plt.title(titles[i])
-    plt.axis('off')
-plt.tight_layout()
+   
+
 plt.show()
