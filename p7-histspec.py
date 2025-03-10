@@ -20,6 +20,19 @@ def hist_match(source, reference):
     matched_image = cv2.merge([np.uint8(matched_channels[0]), np.uint8(matched_channels[1]), np.uint8(matched_channels[2])])
     return matched_image
 
+def plot_histogram(image, title):
+    """Plots histogram for each RGB channel."""
+    colors = ('r', 'g', 'b')  # Define colors for R, G, B channels
+    plt.figure(figsize=(8, 4))
+    for i, color in enumerate(colors):
+        hist = cv2.calcHist([image], [i], None, [256], [0, 256])
+        plt.plot(hist, color=color, label=f"{color.upper()} Channel")
+    plt.title(title)
+    plt.xlabel("Pixel Intensity")
+    plt.ylabel("Frequency")
+    plt.legend()
+    plt.grid()
+
 # Load images in color
 source_image = cv2.imread('dog1.jfif')  
 reference_image = cv2.imread('dog2.webp')  
@@ -31,8 +44,9 @@ reference_image = cv2.cvtColor(reference_image, cv2.COLOR_BGR2RGB)
 # Perform histogram matching
 result_image = hist_match(source_image, reference_image)
 
-# Display results
+# Display images
 plt.figure(figsize=(12, 6))
+
 plt.subplot(1, 3, 1)
 plt.title('Source Image')
 plt.imshow(source_image)
@@ -49,4 +63,10 @@ plt.imshow(result_image)
 plt.axis('off')
 
 plt.tight_layout()
+plt.show()
+
+# Plot histograms for original and final images
+plot_histogram(source_image, "Histogram of Source Image")
+plot_histogram(result_image, "Histogram of Matched Image")
+
 plt.show()
